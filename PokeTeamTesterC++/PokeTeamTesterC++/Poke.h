@@ -18,8 +18,8 @@ private:
 	int type2;
 
 public:
-	Poke(int ID, int hp, int attack, int defense, int speed, int special, int type1, int type2);
-
+	Poke(int ID, string name, int hp, int attack, int defense, int speed, int special, int type1, int type2);
+	Poke() {};
 	int getID();
 	//Get Image?
 	string getName();

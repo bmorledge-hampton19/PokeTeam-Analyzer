@@ -31,4 +31,6 @@ public:
 
 	Poke* getBestAttackers(int ID);
 
+	int getID(string pokeName);
+
 };

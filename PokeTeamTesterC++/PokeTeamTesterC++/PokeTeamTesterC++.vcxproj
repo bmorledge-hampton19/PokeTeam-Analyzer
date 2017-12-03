@@ -207,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Poke.h" />
+    <ClInclude Include="PokeQueries.h" />
     <ClInclude Include="SQLServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

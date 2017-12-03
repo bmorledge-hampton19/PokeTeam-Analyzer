@@ -32,5 +32,8 @@
     <ClInclude Include="Poke.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PokeQueries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

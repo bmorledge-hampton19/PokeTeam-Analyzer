@@ -1,4 +1,6 @@
 #include "SQLServer.h"
+#include <string>
+#include <iostream>
 
 Poke* SQL::getBestAttackers(int ID)
 {

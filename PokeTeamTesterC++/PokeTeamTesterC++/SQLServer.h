@@ -3,6 +3,7 @@
 #include <sqlext.h>
 #include <iostream>
 #include <string>
+#include "Poke.h"
 using namespace std;
 
 class SQL {
@@ -21,11 +22,13 @@ private:
 	SQLCHAR szConnectOut[1024];
 	SQLSMALLINT cchConnect;
 
-	string selectQuery(int whichQuery);
-
-	void displayResults(int whichQuery);
+	Poke readIntoPoke();
 
 public:
-	SQL(int whichQuery);
+	SQL();
+
+	~SQL();
+
+	Poke* getBestAttackers(int ID);
 
 };

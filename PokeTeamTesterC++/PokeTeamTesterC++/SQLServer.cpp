@@ -1,38 +1,49 @@
 #include "SQLServer.h"
 
-string SQL::selectQuery(int whichQuery)
+Poke* SQL::getBestAttackers(int ID)
 {
 
+	Poke* poke[10];
+
 	string stSQLTemp = "";
+	stSQLTemp = "SELECT PS.*, GTM.Mul\n";
+	stSQLTemp += "FROM PokemonStats PS, [dbo].[goodTypesInto](" + ID;
+	stSQLTemp += ") AS GTM\n";
+	stSQLTemp += "WHERE PS.Type1 = GTM.A1 AND PS.Type2 = GTM.A2\n";
+	stSQLTemp += "ORDER BY Mul DESC, (PS.HP + PS.Attack + PS.Defense + PS.Speed + PS.Special) DESC";
 
-	if (whichQuery == 6) {
-		stSQLTemp = "select distinct CompanyName ";
-		stSQLTemp += "from Shippers join Orders on ShipVia = ShipperID ";
-		stSQLTemp += "where Freight > 100";
-	}
-	else if (whichQuery == 7) {
-		stSQLTemp = "select (FirstName + ' ' + LastName) as EmployeeName, Title ";
-		stSQLTemp += "from Employees";
-	}
-	else if (whichQuery == 9) {
-		stSQLTemp = "select MAX(UnitPrice) as MaximumPrice, MIN(UnitPrice) as MinPrice, AVG(UnitPrice) ";
-		stSQLTemp += "as AveragePrice ";
-		stSQLTemp += "from Products";
-	}
-	else if (whichQuery == 10) {
-		stSQLTemp = "select C.CategoryName, MAX(UnitPrice) as MaximumPrice, MIN(UnitPrice) as MinPrice, ";
-		stSQLTemp += "AVG(UnitPrice) as AveragePrice ";
-		stSQLTemp += "from Products P join Categories C on P.CategoryID = C.CategoryID ";
-		stSQLTemp += "group by C.CategoryID, C.CategoryName";
+	stSQL = stSQLTemp;
+	
+	SQLAllocStmt(hdbc, &hstmt);
+	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
+	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))
+	{
+		SQLTCHAR state[255], error[255];
+		SQLINTEGER code;
+		SQLSMALLINT cb;
+		SQLError(henv, hdbc, hstmt, state, &code, error, 255, &cb);
+		cout << error << endl;
+		exit(0);
 	}
 
-	return stSQLTemp;
+	int results = 0;
+
+	while (rc == SQL_SUCCESS && results < 5) {
+		rc = SQLFetch(hstmt);
+
+		poke[results] = new readIntoPoke();
+
+		results++;
+
+		
+
+
 }
 
 void SQL::displayResults(int whichQuery)
 {
 	int results = 0;
-
+	
 	while (rc == SQL_SUCCESS && results < 5) {
 		rc = SQLFetch(hstmt);
 
@@ -82,16 +93,22 @@ void SQL::displayResults(int whichQuery)
 	cout << endl;
 }
 
-SQL::SQL(int whichQuery)
+Poke SQL::readIntoPoke()
 {
-	this->whichQuery = whichQuery;
+
+
+
+	return;
+}
+
+SQL::SQL()
+{
 
 	SQLAllocEnv(&henv);
 	SQLAllocConnect(henv, &hdbc);
 
 	string stConnect = "Driver={SQL Server};Server=CS1;";
 	stConnect += "Database=Northwind;Trusted_Connection=yes;";
-	stSQL = selectQuery(whichQuery);
 
 	rc = SQLDriverConnect(hdbc, NULL, (SQLCHAR *)stConnect.c_str(), stConnect.length(), szConnectOut, 1024, &cchConnect, SQL_DRIVER_NOPROMPT);
 	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))
@@ -103,26 +120,15 @@ SQL::SQL(int whichQuery)
 		cout << error << endl;
 		exit(0);
 	}
-	SQLAllocStmt(hdbc, &hstmt);
-	cout << stSQL << endl << endl;
-	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
-	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))
-	{
-		SQLTCHAR state[255], error[255];
-		SQLINTEGER code;
-		SQLSMALLINT cb;
-		SQLError(henv, hdbc, hstmt, state, &code, error, 255, &cb);
-		cout << error << endl;
-		exit(0);
-	}
+	
+}
 
-	displayResults(whichQuery);
-
-
-
+SQL::~SQL()
+{
 
 	SQLFreeStmt(hstmt, SQL_DROP);
 	SQLDisconnect(hdbc);
 	SQLFreeConnect(hdbc);
 	SQLFreeEnv(henv);
+
 }

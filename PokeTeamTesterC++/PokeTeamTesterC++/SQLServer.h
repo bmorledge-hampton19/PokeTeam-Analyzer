@@ -30,6 +30,7 @@ public:
 	~SQL();
 
 	Poke* getBestAttackers(int ID);
+	Poke getPoke(int ID);
 
 	int getID(string pokeName);
 

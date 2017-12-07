@@ -36,7 +36,16 @@ int main() {
 			teamCalculations(pokeIDs);
 		}
 		else if (selection == '2') {//pokedex, single pokemon lookup
-			cout << "We'll figure this out later.";
+			
+			do {
+				cout << "Enter the name of the pokemon whose stats you would like to see.";
+				cin >> pokeNames[0];
+				pokeIDs[0] = getPokeID(pokeNames[0]);
+				if (pokeIDs[0] == 0) cout << "No generation 1 Pokemon have this name. Please try again.\n";
+			} while (pokeIDs[0] == 0);
+
+
+
 		}
 		else cout << "Invalid selection.\n";
 

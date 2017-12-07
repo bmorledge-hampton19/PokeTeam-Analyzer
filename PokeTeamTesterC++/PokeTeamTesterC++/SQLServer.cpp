@@ -99,13 +99,15 @@ Poke * SQL::getBestAttackers(int ID)
 
 Poke SQL::getPoke(int ID)
 {
-	int pokeInfo[8];
+	int pokeInfo[9];
 	string pokeName = "";
 
 	string stSQLTemp = "";
-	stSQLTemp += "SELECT *\n";
-	stSQLTemp += "FROM PokemonStats AS PS\n";
-	stSQLTemp += "WHERE PS.ID = 68";
+	stSQLTemp += "SELECT PS.*, PC.Name\n";
+	stSQLTemp += "FROM PokemonStats AS PS INNER JOIN PokeCharacteristics AS PC ON PC.ID = PS.ID \n";
+	stSQLTemp += "WHERE PS.ID = " + to_string(ID);
+
+	stSQL = stSQLTemp;
 
 	SQLAllocStmt(hdbc, &hstmt);
 	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
@@ -119,13 +121,16 @@ Poke SQL::getPoke(int ID)
 		exit(0);
 	}
 
-	for (int i = 0; i < 8; i++) {
+	rc = SQLFetch(hstmt);
+
+	for (int i = 0; i < 9; i++) {
 
 		SQLGetData(hstmt, i + 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
-		pokeInfo[i] = stoi(szData);
+		if (i == 8) pokeName = szData;
+		else pokeInfo[i] = stoi(szData);
 	}
 
-	Poke poke(pokeInfo[0],pokeName, pokeInfo[1], pokeInfo[2], pokeInfo[3], pokeInfo[4], pokeInfo[5], pokeInfo[6], pokeInfo[7]);
+	Poke poke(pokeInfo[0], pokeName, pokeInfo[1], pokeInfo[2], pokeInfo[3], pokeInfo[4], pokeInfo[5], pokeInfo[6], pokeInfo[7]);
 
 	return poke;
 }

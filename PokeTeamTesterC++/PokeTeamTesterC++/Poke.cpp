@@ -23,6 +23,31 @@ string Poke::getName()
 	return name;
 }
 
+int Poke::getHP()
+{
+	return hp;
+}
+
+int Poke::getAttack()
+{
+	return attack;
+}
+
+int Poke::getDefense()
+{
+	return defense;
+}
+
+int Poke::getSpeed()
+{
+	return speed;
+}
+
+int Poke::getSpecial()
+{
+	return special;
+}
+
 int Poke::getType1()
 {
 	return type1;

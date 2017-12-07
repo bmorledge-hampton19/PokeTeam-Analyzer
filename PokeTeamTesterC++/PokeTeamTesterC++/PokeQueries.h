@@ -12,10 +12,20 @@ using namespace std;
 
 int getPokeID(string name) {//return pokemon ID for given name. If no pokemon have that name return 0
 	int id = 0;
-	SQL steve = SQL();
-	id = steve.getID(name);
+	SQL* steve = new SQL();
+	id = steve->getID(name);
 	//return 0 if no proper name
+	delete steve;
 	return id;
+}
+
+Poke getPokeObject(int ID) {
+
+	SQL* steve = new SQL();
+	Poke poke = steve->getPoke(ID);
+	delete steve;
+	return poke;
+
 }
 
 void teamCalculations(int team[6]) {//returns 

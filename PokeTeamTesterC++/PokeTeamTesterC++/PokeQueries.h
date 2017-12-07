@@ -3,7 +3,11 @@
 #include <iostream>
 #include "SQLServer.h"//handles interaction with Database
 #include "Poke.h" //handles pokemon objects
+#include <vector>
+#include "TeamSort.h"
 using namespace std;
+
+
 
 int getPokeID(string name) {//return pokemon ID for given name. If no pokemon have that name return 0
 	int id = 0;
@@ -15,14 +19,19 @@ int getPokeID(string name) {//return pokemon ID for given name. If no pokemon ha
 
 void teamCalculations(int team[6]) {//returns 
 
+	vector<Poke *>AttackingPokemon;
 	for (int i = 0; i < 6; i++) {
 		SQL steve = SQL();
 		Poke* poke = steve.getBestAttackers(team[i]);
-
-		cout << "The best pokemon against selection " << i + 1 << " is " << poke->getName() << "." << endl;
-
-		delete poke;
+		AttackingPokemon.push_back(poke);
 	}
+	
+	vector<Poke>DefendingTeam;
+	SQL steve = SQL();
+	for (int i = 0; i < 6; i++)
+		DefendingTeam.push_back(steve.getPoke(team[i]));
+	for (int i = 0; i < AttackingPokemon.size(); i++)
+		delete[] AttackingPokemon[i];	//maybe don't need for loop
 }
 
 

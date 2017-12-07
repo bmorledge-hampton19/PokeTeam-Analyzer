@@ -97,6 +97,39 @@ Poke * SQL::getBestAttackers(int ID)
 	return poke;
 }
 
+Poke SQL::getPoke(int ID)
+{
+	int pokeInfo[8];
+	string pokeName = "";
+
+	string stSQLTemp = "";
+	stSQLTemp += "SELECT *\n";
+	stSQLTemp += "FROM PokemonStats AS PS\n";
+	stSQLTemp += "WHERE PS.ID = 68";
+
+	SQLAllocStmt(hdbc, &hstmt);
+	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
+	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))
+	{
+		SQLTCHAR state[255], error[255];
+		SQLINTEGER code;
+		SQLSMALLINT cb;
+		SQLError(henv, hdbc, hstmt, state, &code, error, 255, &cb);
+		cout << error << endl;
+		exit(0);
+	}
+
+	for (int i = 0; i < 8; i++) {
+
+		SQLGetData(hstmt, i + 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
+		pokeInfo[i] = stoi(szData);
+	}
+
+	Poke poke(pokeInfo[0],pokeName, pokeInfo[1], pokeInfo[2], pokeInfo[3], pokeInfo[4], pokeInfo[5], pokeInfo[6], pokeInfo[7]);
+
+	return poke;
+}
+
 int SQL::getID(string pokeName)
 {
 	string stSQLTemp = "";

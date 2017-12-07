@@ -154,7 +154,12 @@ int SQL::getID(string pokeName)
 	if (rc == SQL_SUCCESS) {
 		rc = SQLFetch(hstmt);
 		SQLGetData(hstmt, 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
-		return stoi(szData);
+		string pokeID = szData;
+		if (pokeID.length() > 4) return 0;
+		return stoi(pokeID);
 	}
+
+	cout << "No pokemon found with " << pokeName << " in their name." << endl;
+	return 0;
 
 }

@@ -21,8 +21,9 @@ int getPokeID(string name) {//return pokemon ID for given name. If no pokemon ha
 Poke getPokeObject(int ID) {
 
 	SQL* steve = new SQL();
-
-	
+	Poke poke = steve->getPoke(ID);
+	delete steve;
+	return poke;
 
 }
 

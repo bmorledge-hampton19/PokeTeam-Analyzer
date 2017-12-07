@@ -38,13 +38,19 @@ int main() {
 		else if (selection == '2') {//pokedex, single pokemon lookup
 			
 			do {
-				cout << "Enter the name of the pokemon whose stats you would like to see.";
+				cout << "Enter the name of the pokemon whose stats you would like to see.\n";
 				cin >> pokeNames[0];
 				pokeIDs[0] = getPokeID(pokeNames[0]);
 				if (pokeIDs[0] == 0) cout << "No generation 1 Pokemon have this name. Please try again.\n";
 			} while (pokeIDs[0] == 0);
 
-
+			Poke poke = getPokeObject(pokeIDs[0]);
+			cout << poke.getName() << " has the following base stats:\n";
+			cout << "HP: " << poke.getHP() << endl;
+			cout << "Attack: " << poke.getAttack() << endl;
+			cout << "Defense: " << poke.getDefense() << endl;
+			cout << "Speed: " << poke.getSpeed() << endl;
+			cout << "Special: " << poke.getSpecial() << endl;
 
 		}
 		else cout << "Invalid selection.\n";

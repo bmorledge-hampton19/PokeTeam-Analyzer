@@ -1,3 +1,4 @@
+#pragma once
 #include <windows.h>
 #include <sql.h>
 #include <sqlext.h>
@@ -26,12 +27,9 @@ private:
 
 public:
 	SQL();
-
 	~SQL();
-
 	Poke* getBestAttackers(int ID);
 	Poke getPoke(int ID);
-
 	int getID(string pokeName);
 
 };

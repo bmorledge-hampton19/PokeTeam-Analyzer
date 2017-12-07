@@ -23,6 +23,11 @@ public:
 	int getID();
 	//Get Image?
 	string getName();
+	int getHP();
+	int getAttack();
+	int getDefense();
+	int getSpeed();
+	int getSpecial();
 	int getType1();
 	int getType2();
 

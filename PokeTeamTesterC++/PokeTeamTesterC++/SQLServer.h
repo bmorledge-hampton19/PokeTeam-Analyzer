@@ -31,6 +31,7 @@ public:
 
 	Poke* getBestAttackers(int ID);
 	Poke getPoke(int ID);
+	double getMul(int ID, Poke thing);
 
 	int getID(string pokeName);
 

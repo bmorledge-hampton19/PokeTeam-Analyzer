@@ -130,6 +130,27 @@ Poke SQL::getPoke(int ID)
 	return poke;
 }
 
+double SQL::getMul(int ID, Poke thing)
+{
+
+	string stSQLTemp = "SELECT DISTINCT Mul FROM[Matchups](" + to_string(ID) + ") WHERE D1 = "  + to_string(thing.getType1()) +  " AND D2 = " + to_string(thing.getType2());
+
+	SQLAllocStmt(hdbc, &hstmt);
+	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
+	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))
+	{
+		SQLTCHAR state[255], error[255];
+		SQLINTEGER code;
+		SQLSMALLINT cb;
+		SQLError(henv, hdbc, hstmt, state, &code, error, 255, &cb);
+		cout << error << endl;
+		exit(0);
+	}
+
+	SQLGetData(hstmt, 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
+	return atof(szData);
+}
+
 int SQL::getID(string pokeName)
 {
 	string stSQLTemp = "";

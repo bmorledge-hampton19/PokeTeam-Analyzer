@@ -30,11 +30,11 @@ Poke getPokeObject(int ID) {
 
 void teamCalculations(int team[6]) {//returns 
 	vector<Poke>FINALTEAM;
-	SQL steve = SQL();
-	vector<Poke *>AttackingPokemon;
+	vector<vector<Poke>>AttackingPokemon;
 	for (int i = 0; i < 6; i++) {
-		Poke* poke = steve.getBestAttackers(team[i]);
-		AttackingPokemon.push_back(poke);
+		SQL * steve = new SQL();
+		AttackingPokemon.push_back(steve->getBestAttackers(team[i]));
+		delete steve;
 	}
 	
 	/*vector<Poke>DefendingTeam;
@@ -43,12 +43,14 @@ void teamCalculations(int team[6]) {//returns
 		DefendingTeam.push_back(steve.getPoke(team[i]));*/
 
 
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < AttackingPokemon.size(); i++) {
 		double avgMatchup[10];
-		for (int j = 0; j < 10; j++) {
+		for (int j = 0; j < AttackingPokemon[i].size(); j++) {
 			avgMatchup[j] = 0;
 			for (int k = 0; k < 6; k++) {
-				avgMatchup[j] += steve.getMul(team[i], *(AttackingPokemon[i] + j));//result of query
+				SQL * steve = new SQL();
+				avgMatchup[j] += steve->getMul(team[k], AttackingPokemon[i][j]);//result of query
+				delete steve;
 			}
 		}
 		int indexHigh = 0;
@@ -59,16 +61,13 @@ void teamCalculations(int team[6]) {//returns
 				indexHigh = l;
 			}
 		}
-		FINALTEAM.push_back(*(AttackingPokemon[i] + indexHigh));
+		FINALTEAM.push_back(AttackingPokemon[i][indexHigh]);
 	}
 
 	cout << "The best team of 6 is...\n";
 	for (int i = 0; i < FINALTEAM.size(); i++) {
 		cout << FINALTEAM[i].getName() << endl;
 	}
-
-	for (int i = 0; i < AttackingPokemon.size(); i++)
-		delete[] AttackingPokemon[i];	//maybe don't need for loop
 }
 
 

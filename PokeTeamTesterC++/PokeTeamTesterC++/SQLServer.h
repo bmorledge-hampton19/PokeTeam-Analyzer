@@ -3,6 +3,7 @@
 #include <sql.h>
 #include <sqlext.h>
 #include <iostream>
+#include <vector>
 #include <string>
 #include "Poke.h"
 using namespace std;
@@ -28,7 +29,7 @@ private:
 public:
 	SQL();
 	~SQL();
-	Poke* getBestAttackers(int ID);
+	vector<Poke>getBestAttackers(int ID);
 	Poke getPoke(int ID);
 	double getMul(int ID, Poke thing);
 

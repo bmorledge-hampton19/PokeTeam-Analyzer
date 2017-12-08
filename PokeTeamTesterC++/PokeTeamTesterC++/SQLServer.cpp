@@ -54,10 +54,9 @@ SQL::~SQL()
 
 }
 
-Poke * SQL::getBestAttackers(int ID)
+vector<Poke> SQL::getBestAttackers(int ID)
 {
-	Poke* poke;
-	poke = new Poke[10];
+	vector<Poke>temp;
 
 	string stSQLTemp = "";
 	stSQLTemp += "SELECT Temp.ID, PC.Name, Temp.HP, Temp.Attack, Temp.Defense, Temp.Speed, Temp.Special, Temp.Type1, Temp.Type2, Temp.Mul, Temp.SumStats ";
@@ -89,12 +88,12 @@ Poke * SQL::getBestAttackers(int ID)
 	while (rc == SQL_SUCCESS && results < 10) {
 		rc = SQLFetch(hstmt);
 
-		poke[results] = readIntoPoke();
+		temp.push_back(readIntoPoke());
 
 		results++;
 	}
 
-	return poke;
+	return temp;
 }
 
 Poke SQL::getPoke(int ID)

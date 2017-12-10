@@ -11,6 +11,7 @@ using namespace std;
 //------------------------------------------
 
 int main() {
+	//user menu
 	cout << "Welcome to Poketeam Analyzer! \n \n";
 	char selection;
 	cout << "Would you like to: \n 1) Analyze team of pokemon \n 2) Look up single pokemon stats\n ";
@@ -44,6 +45,7 @@ int main() {
 				if (pokeIDs[0] == 0) cout << "No generation 1 Pokemon have this name. Please try again.\n";
 			} while (pokeIDs[0] == 0);
 
+			//get and display pokemon stats
 			Poke poke = getPokeObject(pokeIDs[0]);
 			cout << poke.getName() << " has the following base stats:\n";
 			cout << "HP: " << poke.getHP() << endl;
@@ -57,5 +59,5 @@ int main() {
 
 		cout << "\n \n Would you like to: \n 1) Analyze team of pokemon \n 2) Look up single pokemon stats\n ";
 		cin >> selection;
-	}
+	}//user can query pokemon forever
 }

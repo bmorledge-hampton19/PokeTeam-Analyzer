@@ -24,6 +24,9 @@
     <ClCompile Include="Poke.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PokeQueries.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SQLServer.h">

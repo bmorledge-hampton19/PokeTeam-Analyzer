@@ -2,8 +2,9 @@
 #include <string>
 #include <iostream>
 
+//SQLServer.cpp handles all queries to the database
 
-Poke SQL::readIntoPoke()
+Poke SQL::readIntoPoke() //returns 6 pokemon from queries called elsewhere
 {
 	int pokeInfo[9];
 	string pokeName;
@@ -22,7 +23,7 @@ Poke SQL::readIntoPoke()
 	return poke;
 }
 
-SQL::SQL()
+SQL::SQL() //gets sqlserver ready to go
 {
 
 	SQLAllocEnv(&henv);
@@ -44,7 +45,7 @@ SQL::SQL()
 	
 }
 
-SQL::~SQL()
+SQL::~SQL()//deleter
 {
 
 	SQLFreeStmt(hstmt, SQL_DROP);
@@ -54,10 +55,10 @@ SQL::~SQL()
 
 }
 
-vector<Poke> SQL::getBestAttackers(int ID)
+vector<Poke> SQL::getBestAttackers(int ID)//gets up to ten best attackers against a given pokemon
 {
 	vector<Poke>temp;
-
+	//query
 	string stSQLTemp = "";
 	stSQLTemp += "SELECT Temp.ID, PC.Name, Temp.HP, Temp.Attack, Temp.Defense, Temp.Speed, Temp.Special, Temp.Type1, Temp.Type2, Temp.Mul, Temp.SumStats ";
 	stSQLTemp += "FROM( ";
@@ -84,7 +85,7 @@ vector<Poke> SQL::getBestAttackers(int ID)
 	}
 
 	int results = 0;
-
+	//up to ten results saved to temp then returned to function caller
 	while (rc == SQL_SUCCESS && results < 10) {
 		rc = SQLFetch(hstmt);
 
@@ -96,11 +97,11 @@ vector<Poke> SQL::getBestAttackers(int ID)
 	return temp;
 }
 
-Poke SQL::getPoke(int ID)
+Poke SQL::getPoke(int ID)//gets pokemon by id name
 {
 	int pokeInfo[9];
-	string pokeName = "";
-
+	string pokeName = "";//make empty pokemon name, not important for this query but is important for poke constructor
+	
 	string stSQLTemp = "";
 	stSQLTemp += "SELECT PS.*, PC.Name\n";
 	stSQLTemp += "FROM PokemonStats AS PS INNER JOIN PokeCharacteristics AS PC ON PC.ID = PS.ID \n";
@@ -134,7 +135,7 @@ Poke SQL::getPoke(int ID)
 	return poke;
 }
 
-double SQL::getMul(int ID, Poke thing)
+double SQL::getMul(int ID, Poke thing)//gets multiplier between 1 attacking pokemon (as integer "ID") and 1 defending pokemon (as object "thing")
 {
 
 	string stSQLTemp = "SELECT DISTINCT Mul FROM[Matchups](" + to_string(ID) + ") WHERE D1 = "  + to_string(thing.getType1()) +  " AND D2 = " + to_string(thing.getType2());
@@ -155,7 +156,7 @@ double SQL::getMul(int ID, Poke thing)
 	return atof(szData);
 }
 
-int SQL::getID(string pokeName)
+int SQL::getID(string pokeName)//gets pokemon id from name, or part of name
 {
 	string stSQLTemp = "";
 	stSQLTemp += "SELECT PC.*\n";
@@ -166,7 +167,7 @@ int SQL::getID(string pokeName)
 
 	SQLAllocStmt(hdbc, &hstmt);
 	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
-	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))
+	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))//if no pokemon match return failure and main.cpp will warn user and let them try again
 	{
 		SQLTCHAR state[255], error[255];
 		SQLINTEGER code;
@@ -176,7 +177,7 @@ int SQL::getID(string pokeName)
 		exit(0);
 	}
 
-	if (rc == SQL_SUCCESS) {
+	if (rc == SQL_SUCCESS) {//pokemon found, return data
 		rc = SQLFetch(hstmt);
 		SQLGetData(hstmt, 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
 		string pokeID = szData;

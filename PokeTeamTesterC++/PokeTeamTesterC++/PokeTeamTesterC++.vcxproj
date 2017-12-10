@@ -203,6 +203,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Poke.cpp" />
+    <ClCompile Include="PokeQueries.cpp" />
     <ClCompile Include="SQLServer.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 #include "Poke.h"
-
+//simple pokemon class with basic getters and setters for normal pokemon stats
 Poke::Poke(int ID, string name, int hp, int attack, int defense, int speed, int special, int type1, int type2)
 {
 	this->ID = ID;

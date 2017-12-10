@@ -15,7 +15,11 @@ int main() {
 	cout << "Welcome to Poketeam Analyzer! \n \n";
 	char selection;
 	cout << "Would you like to: \n 1) Analyze team of pokemon \n 2) Look up single pokemon stats\n ";
-	cin >> selection;
+	while (!(cin >> selection)) {
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cout << " Please enter 1 or 2.\n ";
+	}
 	cout << "\n \n";
 	int pokeIDs[6];
 	string pokeNames[6];

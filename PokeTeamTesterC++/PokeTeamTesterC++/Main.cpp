@@ -13,7 +13,7 @@ using namespace std;
 int main() {
 	//user menu
 	cout << "Welcome to Poketeam Analyzer! \n \n";
-	char selection;
+	int selection;
 	cout << "Would you like to: \n 1) Analyze team of pokemon \n 2) Look up single pokemon stats\n ";
 	while (!(cin >> selection)) {
 		cin.clear();
@@ -24,7 +24,7 @@ int main() {
 	int pokeIDs[6];
 	string pokeNames[6];
 	while (true) {
-		if (selection == '1') {//team analyzer. Finds best team to combat
+		if (selection == 1) {//team analyzer. Finds best team to combat
 			cout << "Enter 6 names of pokemon to add to your team.\n";
 			for (int i = 0; i < 6; i++) {//loop until we have 6 different pokemon
 				do {//loop until user gives valid pokemon name
@@ -40,7 +40,7 @@ int main() {
 			//run teamAnalysis query and find best team
 			teamCalculations(pokeIDs);
 		}
-		else if (selection == '2') {//pokedex, single pokemon lookup
+		else if (selection == 2) {//pokedex, single pokemon lookup
 			
 			do {
 				cout << "Enter the name of the pokemon whose stats you would like to see.\n";

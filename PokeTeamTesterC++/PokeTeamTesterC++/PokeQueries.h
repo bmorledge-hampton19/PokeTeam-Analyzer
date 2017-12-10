@@ -7,7 +7,7 @@
 #include <algorithm>
 
 //gets pokemon id from name
-int getPokeID(string name);
+int getPokeID(string &name);
 //gets pokemon object from id
 Poke getPokeObject(int ID);
 //does all team calculations to find best attacking team

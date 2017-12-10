@@ -3,12 +3,12 @@
 using namespace std;
 
 
-int getPokeID(string name) {//return pokemon ID for given name. If no pokemon have that name return 0
+int getPokeID(string &name) {//return pokemon ID for given name. If no pokemon have that name return 0
 	int id = 0;
-	SQL* steve = new SQL();
-	id = steve->getID(name);
+	SQL* pokemon = new SQL();
+	id = pokemon->getID(name);
 	//return 0 if no proper name
-	delete steve;
+	delete pokemon;
 	return id;
 }
 

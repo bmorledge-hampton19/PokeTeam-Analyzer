@@ -33,6 +33,6 @@ public:
 	Poke getPoke(int ID);
 	double getMul(int ID, Poke thing);
 
-	int getID(string pokeName);
+	int getID(string &pokeName);
 
 };

@@ -156,7 +156,7 @@ double SQL::getMul(int ID, Poke thing)//gets multiplier between 1 attacking poke
 	return atof(szData);
 }
 
-int SQL::getID(string pokeName)//gets pokemon id from name, or part of name
+int SQL::getID(string &pokeName)//gets pokemon id from name, or part of name
 {
 	string stSQLTemp = "";
 	stSQLTemp += "SELECT PC.*\n";
@@ -167,7 +167,7 @@ int SQL::getID(string pokeName)//gets pokemon id from name, or part of name
 
 	SQLAllocStmt(hdbc, &hstmt);
 	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
-	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))//if no pokemon match return failure and main.cpp will warn user and let them try again
+	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))//if query fails, return error
 	{
 		SQLTCHAR state[255], error[255];
 		SQLINTEGER code;
@@ -182,6 +182,8 @@ int SQL::getID(string pokeName)//gets pokemon id from name, or part of name
 		SQLGetData(hstmt, 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
 		string pokeID = szData;
 		if (pokeID.length() > 4) return 0;
+		SQLGetData(hstmt, 2, SQL_C_CHAR, szData, sizeof(szData), &cbData);
+		pokeName = szData;
 		return stoi(pokeID);
 	}
 

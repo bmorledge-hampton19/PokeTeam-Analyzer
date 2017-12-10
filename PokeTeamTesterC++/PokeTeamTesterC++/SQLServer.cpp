@@ -4,7 +4,7 @@
 
 //SQLServer.cpp handles all queries to the database
 
-Poke SQL::readIntoPoke() //returns 6 pokemon from queries called elsewhere
+Poke SQL::readIntoPoke() // Creates a pokemon object given data from a query
 {
 	int pokeInfo[9];
 	string pokeName;
@@ -45,7 +45,7 @@ SQL::SQL() //gets sqlserver ready to go
 	
 }
 
-SQL::~SQL()//deleter
+SQL::~SQL()//deleter.  Frees up resources for the query engine
 {
 
 	SQLFreeStmt(hstmt, SQL_DROP);
@@ -85,7 +85,7 @@ vector<Poke> SQL::getBestAttackers(int ID)//gets up to ten best attackers agains
 	}
 
 	int results = 0;
-	//up to ten results saved to temp then returned to function caller
+	// Up to ten results saved to temp then returned to function caller
 	while (rc == SQL_SUCCESS && results < 10) {
 		rc = SQLFetch(hstmt);
 
@@ -100,8 +100,9 @@ vector<Poke> SQL::getBestAttackers(int ID)//gets up to ten best attackers agains
 Poke SQL::getPoke(int ID)//gets pokemon by id name
 {
 	int pokeInfo[9];
-	string pokeName = "";//make empty pokemon name, not important for this query but is important for poke constructor
+	string pokeName;
 	
+	// Query to get pokemon information given its ID
 	string stSQLTemp = "";
 	stSQLTemp += "SELECT PS.*, PC.Name\n";
 	stSQLTemp += "FROM PokemonStats AS PS INNER JOIN PokeCharacteristics AS PC ON PC.ID = PS.ID \n";
@@ -123,6 +124,7 @@ Poke SQL::getPoke(int ID)//gets pokemon by id name
 
 	rc = SQLFetch(hstmt);
 
+	// Use data from the query to create the pokemon object
 	for (int i = 0; i < 9; i++) {
 
 		SQLGetData(hstmt, i + 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
@@ -167,7 +169,7 @@ int SQL::getID(string &pokeName)//gets pokemon id from name, or part of name
 
 	SQLAllocStmt(hdbc, &hstmt);
 	rc = SQLExecDirect(hstmt, (SQLCHAR*)stSQL.c_str(), SQL_NTS);
-	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))//if query fails, return error
+	if (!(rc == SQL_SUCCESS || rc == SQL_SUCCESS_WITH_INFO))
 	{
 		SQLTCHAR state[255], error[255];
 		SQLINTEGER code;
@@ -177,12 +179,12 @@ int SQL::getID(string &pokeName)//gets pokemon id from name, or part of name
 		exit(0);
 	}
 
-	if (rc == SQL_SUCCESS) {//pokemon found, return data
+	if (rc == SQL_SUCCESS) {
 		rc = SQLFetch(hstmt);
 		SQLGetData(hstmt, 1, SQL_C_CHAR, szData, sizeof(szData), &cbData);
-		string pokeID = szData;
-		if (pokeID.length() > 4) return 0;
-		SQLGetData(hstmt, 2, SQL_C_CHAR, szData, sizeof(szData), &cbData);
+		string pokeID = szData; // Alter the given string to exactly match the pokemon that was found.
+		if (pokeID.length() > 4) return 0; // Checks for invalid input.
+		SQLGetData(hstmt, 2, SQL_C_CHAR, szData, sizeof(szData), &cbData); // Get the pokemon's ID to return.
 		pokeName = szData;
 		return stoi(pokeID);
 	}
